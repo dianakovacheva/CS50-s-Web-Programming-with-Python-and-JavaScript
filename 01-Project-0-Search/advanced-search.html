@@ -4,11 +4,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Advanced Search</title>
 </head>
 
 <body>
-    <p>Hello from Google Advanced Search</p>
+    <div class="container">
+        <div id="header">
+            <div class="logo-container">
+                <a aria-label="Go to Google Home" href="./index.html" title="Go to Google Home">
+                    <img class="advanced-search-logo"
+                        src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+                        alt="google-logo">
+                </a>
+            </div>
+            <div class="page-name-container">
+                <p class="page-name"> Advanced Search </p>
+            </div>
+            <div class="divider"></div>
+        </div>
+        <div class="form-section-advanced">
+            <form id="advanced-form" action="https://www.google.com/search" method="GET" name="f" role="search">
+                <div class="table-header">
+                    <div class="left-side">
+                        <p class="starting-line">Find pages with...</p>
+                    </div>
+                    <div class="whitespace"></div>
+                    <div class="right-side">
+                        <p class="info-text">To do this in the search box.</p>
+                    </div>
+                </div>
+
+                <!-- all these words: -->
+
+                <div class="form-rows">
+                    <div class="input-field-container">
+                        <div class="field-name left-side">
+                            <label for="all-words">all these words:</label>
+                        </div>
+                        <div class="field-input whitespace">
+                            <input class="all-words" value="" autofocus="autofocus" name="as_q" type="text">
+                        </div>
+                        <div class="additional-info-container">
+                            <div class="additional-info">
+                                Type the important words:
+                                <span class="example-text">tri-colour rat terrier</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- this exact word or phrase: -->
+
+                    <div class="input-field-container">
+                        <div class="field-name left-side">
+                            <label for="exact-phrase">this exact word or phrase:</label>
+                        </div>
+                        <div class="field-input whitespace">
+                            <input class="exact-phrase" value="" autofocus="autofocus" name="as_epq" type="text">
+                        </div>
+                        <div class="additional-info-container">
+                            <div class="additional-info">
+                                Put exact words in quotes:
+                                <span class="example-text">"rat terrier"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- any of these words: -->
+                    <div class="input-field-container">
+                        <div class="field-name left-side">
+                            <label for="any-of-words">any of these words:</label>
+                        </div>
+                        <div class="field-input whitespace">
+                            <input class="any-of-words" value="" autofocus="autofocus" name="as_oq" type="text">
+                        </div>
+                        <div class="additional-info-container">
+                            <div class="additional-info">
+                                Type OR between all the words you want:
+                                <span class="example-text">miniature OR standard</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- none of these words: -->
+                    <div class="input-field-container">
+                        <div class="field-name left-side">
+                            <label for="none-of-words">none of these words:</label>
+                        </div>
+                        <div class="field-input whitespace">
+                            <input class="none-of-words" value="" autofocus="autofocus" name="as_eq" type="text">
+                        </div>
+                        <div class="additional-info-container">
+                            <div class="additional-info">
+                                Put a minus sign just before words that you don't want:
+                                <span class="example-text">-rodent, -"Jack Russell"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- action button -->
+                    <div class="input-field-container">
+                        <div class="left-side"></div>
+                        <div class="whitespace">
+                            <input class="action-btn" value="Advanced Search" type="submit">
+                        </div>
+                        <div class="additional-info-container">
+                            <div class="additional-info"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="divider last"></div>
+        </div>
+    </div>
 </body>
 
 </html>
