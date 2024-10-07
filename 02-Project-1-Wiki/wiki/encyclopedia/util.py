@@ -3,6 +3,8 @@ import re
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
+from .forms import EntryForm
+
 
 def list_entries():
     """
@@ -36,17 +38,3 @@ def get_entry(title):
     except FileNotFoundError:
         return None
 
-
-def create_entry(title):
-    return title
-
-
-# title comes from textinput
-# content comes from textarea
-
-# md_content = f"# {title}\n\n{content}"
-
-# TODO: Find out how to save a string as text file
-# f"{title}.md"
-
-# default_storage.save(filename, ContentFile(content.encode('ascii')))
