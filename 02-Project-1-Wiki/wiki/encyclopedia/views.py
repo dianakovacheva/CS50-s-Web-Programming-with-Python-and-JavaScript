@@ -1,9 +1,5 @@
-import markdown2
-from django.http import HttpResponseRedirect
-from django.core.files.storage import default_storage
-
 from django.shortcuts import render, redirect
-from django.views import generic
+import random
 
 from .forms import EntryForm
 
@@ -13,12 +9,14 @@ from markdown2 import Markdown
 from . import util
 
 
+# Index Page
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
     })
 
 
+# Entry Page
 def get_entry(request, entry):
     print("In get_entry")
     markdowner = Markdown()
@@ -35,6 +33,7 @@ def get_entry(request, entry):
         })
 
 
+# New Page
 def new_entry(request):
     print("In new_entry")
     if request.method == "GET":
@@ -68,6 +67,7 @@ def new_entry(request):
                           )
 
 
+# Edit Page
 def edit_entry(request, title):
     if request.method == "GET":
 
@@ -105,3 +105,13 @@ def edit_entry(request, title):
             return render(request, "encyclopedia/new_entry.html",
                           {"form": form}
                           )
+
+
+# Random Page
+def get_random(request):
+    entries_list = util.list_entries()
+
+    if entries_list:
+        random_entry = random.choice(entries_list)
+        # Redirect to the detail page of the randomly chosen entry
+        return redirect("encyclopedia:entry", entry=random_entry)
