@@ -21,6 +21,6 @@
 <form action="/wiki/{{ title }}/edit_entry" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Save">
+    <input type="submit" value="Save" class="btn btn-primary">
 </form>
 {% endblock %}
