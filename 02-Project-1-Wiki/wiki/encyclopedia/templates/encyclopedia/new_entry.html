@@ -1,0 +1,28 @@
+{% extends "encyclopedia/layout.html" %}
+
+
+{% block title %}
+    {{ new_entry.title }}
+{% endblock %}
+
+{% block body %}
+{% if form.errors %}
+<div class="alert alert-danger">
+    {{ form.errors }}
+</div>
+{% endif %}
+
+{% if error_message %}
+<div class="alert alert-danger">
+    {{ error_message }}
+</div>
+{% endif %}
+
+<form action="/new_entry" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Save">
+</form>
+<p>Read through <a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax" target="_blank">GitHub’s Markdown guide</a> to get an understanding for how Markdown’s syntax works.</p>
+
+{% endblock %}
