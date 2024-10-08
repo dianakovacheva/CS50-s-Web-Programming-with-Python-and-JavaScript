@@ -5,13 +5,10 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
         <h1>All Pages</h1>
         <ul class="list-group list-group-flush">
             {% for entry in entries %}
                 <a href="wiki/{{entry}}"><li class="list-group-item">{{ entry }}</li></a>
             {% endfor %}
         </ul>
-    </div>
-
 {% endblock %}
