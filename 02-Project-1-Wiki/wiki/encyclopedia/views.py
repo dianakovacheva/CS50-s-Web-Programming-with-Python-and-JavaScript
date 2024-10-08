@@ -115,3 +115,25 @@ def get_random(request):
         random_entry = random.choice(entries_list)
         # Redirect to the detail page of the randomly chosen entry
         return redirect("encyclopedia:entry", entry=random_entry)
+
+
+# Search Page
+def search_entry(request):
+    entries_list = util.list_entries()
+    results_list = []
+
+    query = request.GET.get("q")
+
+    if query in entries_list:
+        return redirect("encyclopedia:entry", entry=query)
+
+    for entry in entries_list:
+        if query.lower() in entry.lower():
+            results_list.append(entry)
+
+    return render(request, "encyclopedia/search_result.html", {"title": "Search results", "results": results_list} )
+
+
+
+    # if user_input in entries_list:
+    #         return redirect("encyclopedia:entry", entry=user_input)
