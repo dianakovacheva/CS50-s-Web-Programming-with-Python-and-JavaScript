@@ -13,8 +13,9 @@ h1 {
 }
 
 textarea {
-    height: 90vh;
+    height: 65vh;
     width: 80%;
+    margin-bottom: 1rem;
 }
 
 .main {
@@ -35,4 +36,23 @@ textarea {
 
 .sidebar h2 {
     margin-top: 5px;
+}
+
+/*Logo*/
+.logo {
+    text-decoration: none;
+    color: black !important;
+}
+
+.logo:hover {
+    text-decoration: none;
+}
+
+/*Form*/
+label {
+    display: flex !important;
+}
+
+input {
+    margin-bottom: 1rem;
 }
