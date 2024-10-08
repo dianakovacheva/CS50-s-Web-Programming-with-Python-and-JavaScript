@@ -18,7 +18,6 @@ def index(request):
 
 # Entry Page
 def get_entry(request, entry):
-    print("In get_entry")
     markdowner = Markdown()
     entry_page = util.get_entry(entry)
 
@@ -35,7 +34,6 @@ def get_entry(request, entry):
 
 # New Page
 def new_entry(request):
-    print("In new_entry")
     if request.method == "GET":
         form = EntryForm()
         return render(request, "encyclopedia/new_entry.html",
