@@ -7,13 +7,13 @@ class User(AbstractUser):
     owned_auctions = models.ManyToManyField("Listing", blank=True, related_name="auctions_list")
 
     def __str__(self):
-        return f"{self.id} {self.owned_auctions}"
+        return f"{self.username} {self.id}"
 
 
 class Listing(models.Model):
     title = models.CharField(max_length=64, unique=True, help_text="Enter title")
     description = models.TextField(max_length=1000, help_text="Enter a brief description of the auction")
-    starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     image_URL = models.URLField(max_length=200, help_text="Add image URL")
     # foreign key User
     owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="auction_owner")
@@ -24,7 +24,7 @@ class Listing(models.Model):
     comments = models.ManyToManyField("Comment", blank=True, related_name="auction_comments")
 
     def __str__(self):
-        return f"{self.title} {self.description} {self.starting_bid} {self.image_URL} {self.owner} {self.category} {self.date_created} {self.comments}"
+        return f"{self.title} {self.description} {self.price} {self.image_URL} {self.owner} {self.category} {self.date_created} {self.comments}"
 
 
 class Bid(models.Model):
@@ -53,13 +53,13 @@ class Comment(models.Model):
 class Category(models.Model):
 
     AUCTION_CATEGORIES = (
-        ("f", "Fashion"),
-        ("t", "Toys"),
-        ("e", "Electronics"),
-        ("h", "Home")
+        ("Fashion", "Fashion"),
+        ("Toys", "Toys"),
+        ("Electronics", "Electronics"),
+        ("Home", "Home")
     )
 
-    category = models.CharField(max_length=4, choices=AUCTION_CATEGORIES, blank=True)
+    category = models.CharField(max_length=64, choices=AUCTION_CATEGORIES, blank=True)
 
     class Meta:
         verbose_name_plural = 'Categories'

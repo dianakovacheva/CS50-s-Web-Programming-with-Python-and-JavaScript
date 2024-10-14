@@ -1,3 +1,44 @@
 body {
     padding: 10px;
 }
+
+
+/*Page Heading*/
+.heading-text {
+    margin-bottom: 1em;
+}
+
+#create-listing-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 90vw;
+    height: 100vh;
+}
+
+.form-fields {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+}
+
+@media screen and (max-width: 640px) {
+    .form-fields {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+.btn-holder{
+    align-self: center;
+}
+
+
+.form-left-side, .form-right-side {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+input, textarea {
+    margin-bottom: 1em;
+}

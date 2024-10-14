@@ -1,14 +1,26 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
+from django import forms
 
-from .models import User
+from .models import User, Listing, Bid, Comment, Category
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+
+    try:
+        listings = Listing.objects.all()
+
+        if listings:
+            return render(request, "auctions/index.html", {
+                "listings": listings
+            })
+    except IntegrityError:
+        return render(request, "auctions/index.html", {
+            "message": "No listings to show"
+        })
 
 
 def login_view(request):
@@ -51,7 +63,7 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password)
+            user = User.objects.create_xuser(username, email, password)
             user.save()
         except IntegrityError:
             return render(request, "auctions/register.html", {
