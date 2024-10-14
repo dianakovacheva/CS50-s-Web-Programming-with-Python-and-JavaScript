@@ -112,3 +112,10 @@ def get_listing(request, id):
     return render(request, "auctions/listing.html", {
         "listing": listing
     })
+
+
+def place_bid(request, id):
+
+    return render(request, "auctions/listing.html", {
+        "bid": 0
+    })

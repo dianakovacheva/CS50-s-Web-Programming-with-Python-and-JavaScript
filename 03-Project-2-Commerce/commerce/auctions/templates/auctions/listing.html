@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    {{ listing.title }}
+{% endblock %}
+
+{% if message %}
+    {{ message }}
+{% endif %}
+
+{% block body %}
+    <div id="listing-details-container">
+        <h2>Listing: {{ listing.title }}</h2>
+        <!--TODO: Add logic if in watchlist-->
+        <span class="badge text-bg-secondary">Watchlist</span>
+        <img class="listing-img" src="{{ listing.image_URL }}">
+        <p>{{ listing.description }}</p>
+        <h3 class="listing-price">${{ listing.price }}</h3>
+        <p><small>
+            <!-- TODO: Add logic for bids quantity-->
+            2 bid(s) so far. Your bid is the current bid.
+        </small></p>
+        <div class="bid-form-container">
+            <form action="{% url 'place_bid' listing.id %}" method="post" name="place_bid">
+                <input type="text" placeholder="Bid">
+                <input class="btn btn-primary" type="submit" value="Place Bid">
+            </form>
+        </div>
+        <div class="listing-info">
+            <h4>Details</h4>
+            <ul>
+                <!-- TODO: Add link to user's profile -->
+                <li>Listed by: <a href="{% url 'index' %}">{{ listing.owner }}</a></li>
+                <li>Category: {{ listing.category }}</li>
+            </ul>
+        </div>
+
+    </div>
+
+
+{% endblock %}

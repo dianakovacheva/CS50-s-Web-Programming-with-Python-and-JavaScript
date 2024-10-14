@@ -7,7 +7,7 @@ class User(AbstractUser):
     owned_auctions = models.ManyToManyField("Listing", blank=True, related_name="auctions_list")
 
     def __str__(self):
-        return f"{self.username} {self.id}"
+        return f"{self.username}"
 
 
 class Listing(models.Model):

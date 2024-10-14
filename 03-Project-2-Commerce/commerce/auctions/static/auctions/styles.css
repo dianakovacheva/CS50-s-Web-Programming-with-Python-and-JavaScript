@@ -23,10 +23,6 @@ body {
     color: black;
 }
 
-.listing-img {
-
-}
-
 /*End active listings list*/
 
 
@@ -34,6 +30,7 @@ body {
 .listing-price {
     font-weight: bold;
 }
+
 /*End listing price*/
 
 /*Start listing description*/
@@ -43,6 +40,7 @@ body {
     white-space: nowrap;
 
 }
+
 /*End listing description*/
 
 /*Start listing timestamp*/
@@ -50,13 +48,43 @@ body {
     color: gray;
 }
 
-/*End listing timestamp
+/*End listing timestamp*/
 
-/*Page heading*/
+/*Start listing details page*/
+#listing-details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 90vw;
+}
+
+#listing-details-container .badge {
+    background-color: #6c757d;
+    color: white;
+    width: 70px;
+}
+
+#listing-details-container .listing-img {
+    height: auto;
+    max-width: 400px;
+}
+
+.bid-form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.bid-form-container .btn {
+    width: 100px;
+}
+/*End listing details page*/
+
+/*Start page heading*/
 .heading-text {
     margin-bottom: 1em;
 }
 
+/*End page heading*/
 
 /*Start create listing form*/
 #create-listing-form {
