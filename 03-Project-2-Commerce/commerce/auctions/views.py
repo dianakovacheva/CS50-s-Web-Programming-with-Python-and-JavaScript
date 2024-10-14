@@ -73,3 +73,42 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+def create_listing(request):
+    categories = Category.objects.all()
+
+    if request.method == "POST":
+        title = request.POST["title"]
+        description = request.POST["description"]
+        price = request.POST["price"]
+        image_URL = request.POST["image_URL"]
+        category = request.POST.getlist("category")
+
+        try:
+            if not Listing.objects.filter(title=title).exists():
+                created_listing = Listing.objects.create(title=title, description=description, price=price, image_URL=image_URL, owner=request.user)
+                created_listing.category.set(category)
+                created_listing.save()
+
+                return redirect("listing", id=created_listing.id)
+        except IntegrityError:
+            return render(request, "auctions/create_listing.html", {
+                "message": "Listing already exists."
+            })
+    # If GET request, render the form
+    return render(request, "auctions/create_listing.html", {
+        "categories": categories
+    })
+
+
+def get_categories(request):
+    pass
+
+
+def listing(request, id):
+    listing = Listing.objects.get(pk=id)
+
+    return render(request, "auctions/listing.html", {
+        "listing": listing
+    })
