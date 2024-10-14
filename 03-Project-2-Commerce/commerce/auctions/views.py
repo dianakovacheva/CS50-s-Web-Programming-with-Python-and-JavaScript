@@ -106,7 +106,7 @@ def get_categories(request):
     pass
 
 
-def listing(request, id):
+def get_listing(request, id):
     listing = Listing.objects.get(pk=id)
 
     return render(request, "auctions/listing.html", {

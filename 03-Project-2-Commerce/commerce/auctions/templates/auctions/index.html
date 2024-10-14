@@ -3,17 +3,35 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    {% if message  %}
+    {% if message %}
         {{ message }}
     {% endif %}
 
     {% for listing in listings %}
         <ul>
-            <li>
-                {{ listing.title }}
-               <img src="{{ listing.image_URL }}">
-                {{ listing.id }}
-            </li>
+            <div id="active-listings-container">
+                <a class="active-listing" href="{% url 'get_listing' listing.id %}">
+                    <li>
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-2">
+                                    <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
+                                         alt="{{ listing.title }}">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ listing.title }}</h5>
+                                        <p class="card-text"><span class="listing-price">Price:</span> ${{ listing.price }}</p>
+                                        <p class="card-text listing-description">{{ listing.description }}</p>
+                                        <p class="card-text"><small
+                                                class="listing-timestamp text-body-secondary">Created {{ listing.date_created }}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </a>
+            </div>
         </ul>
     {% endfor %}
 {% endblock %}

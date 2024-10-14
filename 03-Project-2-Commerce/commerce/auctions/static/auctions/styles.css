@@ -2,12 +2,63 @@ body {
     padding: 10px;
 }
 
+/*Start active listings list container*/
+#active-listings-container {
+    width: 90vw;
+    margin-top: 2rem;
+}
 
-/*Page Heading*/
+/*End active listings list container*/
+
+
+/*Start active listings list*/
+.active-listing {
+    text-decoration: none;
+    list-style: none;
+    color: black;
+}
+
+.active-listing:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.listing-img {
+
+}
+
+/*End active listings list*/
+
+
+/*Start listing price*/
+.listing-price {
+    font-weight: bold;
+}
+/*End listing price*/
+
+/*Start listing description*/
+.active-listing .listing-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+/*End listing description*/
+
+/*Start listing timestamp*/
+.listing-timestamp {
+    color: gray;
+}
+
+/*End listing timestamp
+
+/*Page heading*/
 .heading-text {
     margin-bottom: 1em;
 }
 
+
+/*Start create listing form*/
 #create-listing-form {
     display: flex;
     flex-direction: column;
@@ -28,7 +79,7 @@ body {
     }
 }
 
-.btn-holder{
+.btn-holder {
     align-self: center;
 }
 
@@ -42,3 +93,5 @@ body {
 input, textarea {
     margin-bottom: 1em;
 }
+
+/*End create listing form*/
