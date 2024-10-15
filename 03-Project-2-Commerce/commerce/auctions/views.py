@@ -1,15 +1,17 @@
+from urllib.parse import urlparse
+
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, is_valid_path
 from django import forms
 
 from .models import User, Listing, Bid, Comment, Category
 
 
 def index(request):
-
     try:
         listings = Listing.objects.all()
 
@@ -25,7 +27,6 @@ def index(request):
 
 def login_view(request):
     if request.method == "POST":
-
         # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
@@ -34,13 +35,17 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
+            next_url = request.POST.get('next')
+
+            if next_url:
+                return redirect(next_url)
+
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "auctions/login.html", {
                 "message": "Invalid username and/or password."
             })
-    else:
-        return render(request, "auctions/login.html")
+    return render(request, "auctions/login.html")
 
 
 def logout_view(request):
@@ -75,13 +80,9 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
+@login_required(login_url="/login")
 def create_listing(request):
     categories = Category.objects.all()
-
-    if request.user.id is None:
-        return render(request, "auctions/login.html", {
-            "message": "Please login first"
-        })
 
     if request.method == "POST":
         title = request.POST["title"]
@@ -92,7 +93,8 @@ def create_listing(request):
 
         try:
             if not Listing.objects.filter(title=title).exists():
-                created_listing = Listing.objects.create(title=title, description=description, price=price, image_URL=image_URL, owner=request.user)
+                created_listing = Listing.objects.create(title=title, description=description, price=price,
+                                                         image_URL=image_URL, owner=request.user)
                 created_listing.category.set(category)
                 created_listing.save()
 
@@ -119,8 +121,8 @@ def get_listing(request, id):
     })
 
 
+@login_required(login_url="login")
 def place_bid(request, id):
-
     return render(request, "auctions/listing.html", {
         "bid": 0
     })

@@ -1,13 +1,13 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    
-     {% if message or user.is_authenticated == False %}
+
+    {% if message or user.is_authenticated == False %}
         <div>{{ message }}</div>
     {% endif %}
 
     <h2>Login</h2>
-
+    
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -16,6 +16,9 @@
         <div class="form-group">
             <input class="form-control" type="password" name="password" placeholder="Password">
         </div>
+
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+
         <input class="btn btn-primary" type="submit" value="Login">
     </form>
 
