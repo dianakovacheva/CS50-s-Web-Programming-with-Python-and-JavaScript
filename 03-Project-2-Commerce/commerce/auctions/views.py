@@ -78,6 +78,11 @@ def register(request):
 def create_listing(request):
     categories = Category.objects.all()
 
+    if request.user.id is None:
+        return render(request, "auctions/login.html", {
+            "message": "Please login first"
+        })
+
     if request.method == "POST":
         title = request.POST["title"]
         description = request.POST["description"]
