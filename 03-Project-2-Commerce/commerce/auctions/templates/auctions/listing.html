@@ -16,16 +16,24 @@
         <img class="listing-img" src="{{ listing.image_URL }}">
         <p>{{ listing.description }}</p>
         <h3 class="listing-price">${{ listing.price }}</h3>
-        <p><small>
-            <!-- TODO: Add logic for bids quantity-->
-            2 bid(s) so far. Your bid is the current bid.
-        </small></p>
-        <div class="bid-form-container">
-            <form action="{% url 'place_bid' listing.id %}" method="post" name="place_bid">
-                <input type="text" placeholder="Bid">
-                <input class="btn btn-primary" type="submit" value="Place Bid">
-            </form>
-        </div>
+        <p>
+            <small>
+                <!-- TODO: Add logic for bids quantity -->
+                2 bid(s) so far.
+                <!-- TODO: Add logic to check if the current user has bid for this listing -->
+                {% if user.is_authenticated %}
+                    <small>Your bid is the current bid.</small>
+                {% endif %}
+            </small>
+        </p>
+        {% if user.is_authenticated %}
+            <div class="bid-form-container">
+                <form action="{% url 'place_bid' listing.id %}" method="post" name="place_bid">
+                    <input type="text" placeholder="Bid">
+                    <input class="btn btn-primary" type="submit" value="Place Bid">
+                </form>
+            </div>
+        {% endif %}
         <div class="listing-info">
             <h4>Details</h4>
             <ul>
@@ -33,6 +41,7 @@
                 <li>Listed by: <a href="{% url 'index' %}">{{ listing.owner }}</a></li>
                 <li>Category: {{ listing.category }}</li>
             </ul>
+
         </div>
 
     </div>
