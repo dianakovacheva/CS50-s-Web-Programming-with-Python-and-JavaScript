@@ -10,24 +10,33 @@
         {% csrf_token %}
         <div class="form-fields">
             <div class="form-left-side">
-                <label class="form-label" for="title">Title</label>
-                <input class="form-control" type="text" name="title" maxlength="64" required>
-                <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" name="description" maxlength="1000" rows="7" required></textarea>
+                <div class="form-group">
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" name="title" maxlength="64" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" name="description" maxlength="1000" rows="7" required></textarea>
+                </div>
             </div>
             <div class="form-right-side">
-                <label class="form-label" for="price">Price</label>
-                <input class="form-control" type="number" name="price">
-                <label class="form-label" for="image_URL">Image URL</label>
-                <input class="form-control" type="url" name="image_URL">
+                <div class="form-group">
+                    <label class="form-label" for="price">Price</label>
+                    <input class="form-control" type="number" name="price">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="image_URL">Image URL</label>
+                    <input class="form-control" type="url" name="image_URL">
+                </div>
 
-
-                <label class="form-label" for="category">Category</label>
-                <select class="form-select" name="category" multiple>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}">{{ category }}</option>
-                    {% endfor %}
-                </select>
+                <div class="form-group select-category">
+                    <label class="form-label" for="category">Category</label>
+                    <select class="form-select" name="category" multiple>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
         </div>
 
