@@ -1,12 +1,12 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-
-    <h2>Login</h2>
-
-    {% if message %}
+    
+     {% if message or user.is_authenticated == False %}
         <div>{{ message }}</div>
     {% endif %}
+
+    <h2>Login</h2>
 
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
