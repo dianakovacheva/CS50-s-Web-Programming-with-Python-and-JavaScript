@@ -13,7 +13,13 @@
         <h2>Listing: {{ listing.title }}</h2>
         <!--TODO: Add logic if in watchlist-->
         <span class="badge text-bg-secondary">Watchlist</span>
-        <img class="listing-img" src="{{ listing.image_URL }}">
+        {% if listing.image_URL %}
+            <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
+                 alt="{{ listing.title }}">
+        {% else %}
+            <img src="../../static/auctions/landscape-placeholder.svg" class="listing-img img-fluid rounded-start"
+                 alt="{{ listing.title }}">
+        {% endif %}
         <p>{{ listing.description }}</p>
         <h3 class="listing-price">${{ listing.price }}</h3>
         <p>
