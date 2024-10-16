@@ -35,6 +35,7 @@
         {% if user.is_authenticated %}
             <div class="bid-form-container">
                 <form action="{% url 'place_bid' listing.id %}" method="post" name="place_bid">
+                    {% csrf_token %}
                     <input type="text" placeholder="Bid">
                     <input class="btn btn-primary" type="submit" value="Place Bid">
                 </form>
