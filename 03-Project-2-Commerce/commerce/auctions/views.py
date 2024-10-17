@@ -113,7 +113,19 @@ def create_listing(request):
 
 
 def get_categories(request):
-    pass
+    categories = Category.objects.all()
+
+    if categories is not None and len(categories) > 0:
+
+        return render(request, "auctions/categories.html", {
+            "categories": categories
+        })
+    else:
+        return render(request, "auctions/categories.html", {
+            "message": "No categories to show."
+        })
+
+
 
 
 def get_listing(request, id):
