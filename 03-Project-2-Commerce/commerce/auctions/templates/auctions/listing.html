@@ -9,6 +9,11 @@
 {% endif %}
 
 {% block body %}
+
+    {% if message %}
+        {{ message }}
+    {% endif %}
+
     <div id="listing-details-container">
         <h2>Listing: {{ listing.title }}</h2>
         <!--TODO: Add logic if in watchlist-->
