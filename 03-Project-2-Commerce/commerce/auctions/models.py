@@ -5,9 +5,10 @@ from django.db import models
 class User(AbstractUser):
     # many-to-many relation with AuctionListing
     owned_auctions = models.ManyToManyField("Listing", blank=True, related_name="auctions_list")
+    watchlist = models.ManyToManyField("Listing", related_name="watchlist")
 
     def __str__(self):
-        return f"{self.username}"
+        return f"{self.username} {self.first_name} {self.last_name}"
 
 
 class Listing(models.Model):
