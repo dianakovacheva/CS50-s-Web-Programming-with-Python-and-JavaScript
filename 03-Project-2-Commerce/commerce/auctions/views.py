@@ -21,7 +21,7 @@ def index(request):
             })
     except IntegrityError:
         return render(request, "auctions/index.html", {
-            "message": "No listings to show"
+            "message": "No listings to show."
         })
 
 
@@ -89,16 +89,19 @@ def create_listing(request):
         description = request.POST["description"]
         price = request.POST["price"]
         image_URL = request.POST["image_URL"]
-        category = request.POST.getlist("category")
+        category_ids = request.POST.getlist("category")
 
         try:
             if not Listing.objects.filter(title=title).exists():
                 created_listing = Listing.objects.create(title=title, description=description, price=price,
                                                          image_URL=image_URL, owner=request.user)
-                created_listing.category.set(category)
+
+                # Convert category_ids (strings) to a list of Category instances
+                category_objects = Category.objects.filter(id__in=category_ids)
+                created_listing.category.set(category_objects)
                 created_listing.save()
 
-                return redirect("listing", id=created_listing.id)
+                return redirect("get_listing", id=created_listing.id)
         except IntegrityError:
             return render(request, "auctions/create_listing.html", {
                 "message": "Listing already exists."
