@@ -157,3 +157,20 @@ def place_bid(request, id):
     return render(request, "auctions/listing.html", {
         "bid": 0
     })
+
+
+def get_watchlist(request):
+    user = request.user
+
+    # Get user's watchlist data
+    watchlist = request.user.watchlist.all()
+    print(watchlist)
+
+    if len(watchlist) > 0:
+        return render(request, "auctions/watchlist.html", {
+            "watchlist": watchlist
+        })
+    else:
+        return render(request, "auctions/watchlist.html", {
+            "message": "Watchlist is empty."
+        })
