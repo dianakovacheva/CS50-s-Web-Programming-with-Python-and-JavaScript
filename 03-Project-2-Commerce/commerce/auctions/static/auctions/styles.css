@@ -1,10 +1,25 @@
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 body {
     padding: 10px;
+    margin: 10px;
+    width: 90vw;
+}
+
+input, textarea {
+    margin-bottom: 1em;
 }
 
 /*Start active listings list container*/
 #active-listings-container {
-    width: 90vw;
     margin-top: 2rem;
 }
 
@@ -51,11 +66,23 @@ body {
 /*End listing timestamp*/
 
 /*Start listing details page*/
+.listing-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action-btns {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+}
+
 #listing-details-container {
     display: flex;
     flex-direction: column;
     gap: 1em;
-    width: 90vw;
 }
 
 #listing-details-container .badge {
@@ -90,7 +117,6 @@ body {
 #create-listing-form {
     display: flex;
     flex-direction: column;
-    max-width: 90vw;
     height: 100vh;
 }
 
@@ -121,10 +147,6 @@ body {
 .select-category {
     display: flex;
     flex-direction: column;
-}
-
-input, textarea {
-    margin-bottom: 1em;
 }
 
 /*End create listing form*/
