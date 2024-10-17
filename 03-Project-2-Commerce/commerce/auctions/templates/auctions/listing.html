@@ -12,9 +12,15 @@
     {% endif %}
 
     <div id="listing-details-container">
-        <h2>Listing: {{ listing.title }}</h2>
+        <div class="listing-header">
+            <h2>Listing: {{ listing.title }}</h2>
+            <div class="action-btns">
+                <button type="button" class="btn btn-primary">Add to Watchlist</button>
+                <button type="button" class="btn btn-primary">Remove from Watchlist</button>
+            </div>
+        </div>
         <!--TODO: Add logic if in watchlist-->
-        <span class="badge text-bg-secondary">Watchlist</span>
+        {#        <span class="badge text-bg-secondary">Watchlist</span>#}
         {% if listing.image_URL %}
             <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
                  alt="{{ listing.title }}">
