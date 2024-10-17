@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    {{ category }}
+{% endblock %}
+
+{% block body %}
+    <h2>Category: {{ category }}</h2>
+
+    {% if message %}
+        {{ message }}
+    {% endif %}
+
+
+    {% for listing in active_listings_in_category %}
+        {% include 'auctions/listing_card.html' %}
+    {% endfor %}
+
+{% endblock %}
