@@ -126,6 +126,22 @@ def get_categories(request):
         })
 
 
+def get_category(request, id):
+    category = Category.objects.get(pk=id)
+    active_listings_in_category = Listing.objects.filter(category=category.id)
+
+    if category is not None:
+
+        if len(active_listings_in_category) == 0:
+            return render(request, "auctions/category.html", {
+                "category": category,
+                "message": "No active listings to show in this category."
+            })
+        else:
+            return render(request, "auctions/category.html", {
+                "category": category,
+                "active_listings_in_category": active_listings_in_category
+            })
 
 
 def get_listing(request, id):
