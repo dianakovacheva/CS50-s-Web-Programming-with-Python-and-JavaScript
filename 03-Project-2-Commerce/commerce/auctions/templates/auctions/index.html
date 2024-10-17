@@ -8,38 +8,6 @@
     {% endif %}
 
     {% for listing in listings %}
-        <ul>
-            <div id="active-listings-container">
-                <a class="active-listing" href="{% url 'get_listing' listing.id %}">
-                    <li>
-                        <div class="card mb-3">
-                            <div class="row g-0">
-                                <div class="col-md-2">
-                                    {% if listing.image_URL %}
-                                        <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
-                                             alt="{{ listing.title }}">
-                                    {% else %}
-                                        <img src="./static/auctions/landscape-placeholder.svg"
-                                             class="listing-img img-fluid rounded-start"
-                                             alt="{{ listing.title }}">
-                                    {% endif %}
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ listing.title }}</h5>
-                                        <p class="card-text"><span class="listing-price">Price:</span>
-                                            ${{ listing.price }}</p>
-                                        <p class="card-text listing-description">{{ listing.description }}</p>
-                                        <p class="card-text"><small
-                                                class="listing-timestamp text-body-secondary">Created {{ listing.date_created }}</small>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </a>
-            </div>
-        </ul>
+       {% include "auctions/listing_card.html" %}
     {% endfor %}
 {% endblock %}
