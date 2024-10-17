@@ -152,13 +152,14 @@ def get_listing(request, id):
     })
 
 
-@login_required(login_url="login")
+@login_required(login_url="/login")
 def place_bid(request, id):
     return render(request, "auctions/listing.html", {
         "bid": 0
     })
 
 
+@login_required(login_url="/login")
 def get_watchlist(request):
     user = request.user
 
