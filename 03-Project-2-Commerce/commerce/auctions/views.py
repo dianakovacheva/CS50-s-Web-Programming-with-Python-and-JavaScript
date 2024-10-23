@@ -163,11 +163,9 @@ def place_bid(request, id):
 @login_required(login_url="/login")
 def get_watchlist(request):
     user = request.user
+    watchlist = user.watchlist.all()
 
-    # Get user's watchlist data
-    watchlist = request.user.watchlist.all()
-
-    if len(watchlist) > 0:
+    if watchlist is not None and len(watchlist) > 0:
         return render(request, "auctions/watchlist.html", {
             "watchlist": watchlist
         })

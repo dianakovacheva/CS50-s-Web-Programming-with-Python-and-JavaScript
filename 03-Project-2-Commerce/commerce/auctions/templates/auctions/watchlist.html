@@ -10,11 +10,9 @@
     {% if message %}
         {{ message }}
     {% endif %}
-
-    <ul>
-        {% for list_item in watchlist %}
-            <li>{{ list_item }}</li>
+    
+        {% for listing in watchlist %}
+            {% include "auctions/listing_card.html" %}
         {% endfor %}
-    </ul>
 
 {% endblock %}
