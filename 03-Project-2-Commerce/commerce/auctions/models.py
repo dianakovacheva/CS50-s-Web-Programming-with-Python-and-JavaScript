@@ -5,7 +5,6 @@ from django.db import models
 class User(AbstractUser):
     # many-to-many relation with AuctionListing
     owned_auctions = models.ManyToManyField("Listing", blank=True, related_name="auctions_list")
-    watchlist = models.ManyToManyField("Listing", related_name="watchlist")
 
     def __str__(self):
         return f"{self.username} {self.first_name} {self.last_name}"
@@ -14,18 +13,21 @@ class User(AbstractUser):
 class Listing(models.Model):
     title = models.CharField(max_length=64, unique=True, help_text="Enter title")
     description = models.TextField(max_length=1000, help_text="Enter a brief description of the auction")
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
+    current_bid = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     image_URL = models.URLField(max_length=200, help_text="Add image URL")
     # foreign key User
     owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="auction_owner")
     # many-to-many relation with AuctionCategory
     category = models.ManyToManyField("Category", help_text="Select a category", related_name="auction_categories")
     date_created = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
     # foreign key Comment
     comments = models.ManyToManyField("Comment", blank=True, related_name="auction_comments")
+    watchlist = models.ManyToManyField("User", blank=True, related_name="watchlist")
 
     def __str__(self):
-        return f"{self.title} {self.description} {self.price} {self.image_URL} {self.owner} {self.category} {self.date_created} {self.comments}"
+        return f"{self.title} {self.description} {self.starting_bid} {self.current_bid} {self.image_URL} {self.owner} {self.category} {self.date_created} {self.is_active} {self.comments} {self.watchlist}"
 
 
 class Bid(models.Model):
@@ -52,7 +54,6 @@ class Comment(models.Model):
 
 
 class Category(models.Model):
-
     AUCTION_CATEGORIES = (
         ("Fashion", "Fashion"),
         ("Toys", "Toys"),
