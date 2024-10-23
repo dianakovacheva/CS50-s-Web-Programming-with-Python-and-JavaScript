@@ -15,8 +15,14 @@
         <div class="listing-header">
             <h2>Listing: {{ listing.title }}</h2>
             <div class="action-btns">
-                <button type="button" class="btn btn-primary">Add to Watchlist</button>
-                <button type="button" class="btn btn-primary">Remove from Watchlist</button>
+                <form action="{% url 'add_to_watchlist' listing.id %}" method="post">
+                    {% csrf_token %}
+                    {% if user in listing.watchlist.all %}
+                        <input type="submit" value="Remove from Watchlist" class="btn btn-primary">
+                    {% else %}
+                        <input type="submit" value="Add to Watchlist" class="btn btn-primary">
+                    {% endif %}
+                </form>
             </div>
         </div>
         <!--TODO: Add logic if in watchlist-->
@@ -29,7 +35,7 @@
                  alt="{{ listing.title }}">
         {% endif %}
         <p>{{ listing.description }}</p>
-        <h3 class="listing-price">${{ listing.price }}</h3>
+        <h3 class="listing-price">${{ listing.starting_bid }}</h3>
         <p>
             <small>
                 <!-- TODO: Add logic for bids quantity -->
@@ -42,9 +48,9 @@
         </p>
         {% if user.is_authenticated %}
             <div class="bid-form-container">
-                <form action="{% url 'place_bid' listing.id %}" method="post" name="place_bid">
+                <form action="{% url 'get_listing' listing.id %}" method="post">
                     {% csrf_token %}
-                    <input type="text" placeholder="Bid">
+                    <input type="text" name="bid" placeholder="Bid" class="form-control">
                     <input class="btn btn-primary" type="submit" value="Place Bid">
                 </form>
             </div>

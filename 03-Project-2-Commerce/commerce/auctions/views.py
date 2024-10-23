@@ -147,10 +147,11 @@ def get_category(request, id):
 def get_listing(request, id):
     listing = Listing.objects.get(pk=id)
 
-    return render(request, "auctions/listing.html", {
-        "listing": listing
-    })
+    if request.method == "POST":
+        placed_bid = int(request.POST["bid"])
+        listing_starting_bid = int(listing.starting_bid)
 
+        is_bigger = False
 
 @login_required(login_url="/login")
 def place_bid(request, id):
@@ -165,7 +166,6 @@ def get_watchlist(request):
 
     # Get user's watchlist data
     watchlist = request.user.watchlist.all()
-    print(watchlist)
 
     if len(watchlist) > 0:
         return render(request, "auctions/watchlist.html", {
@@ -175,3 +175,17 @@ def get_watchlist(request):
         return render(request, "auctions/watchlist.html", {
             "message": "Watchlist is empty."
         })
+
+
+@login_required(login_url="/login")
+def add_to_watchlist(request, id):
+    user = request.user
+    listing = Listing.objects.get(pk=id)
+
+    if user in listing.watchlist.all():
+        # Remove from watchlist if it's already there
+        listing.watchlist.remove(user)
+    else:
+        listing.watchlist.add(user)
+
+    return redirect('get_listing', id=listing.id)
