@@ -116,7 +116,6 @@ def get_categories(request):
     categories = Category.objects.all()
 
     if categories is not None and len(categories) > 0:
-
         return render(request, "auctions/categories.html", {
             "categories": categories
         })
@@ -131,7 +130,6 @@ def get_category(request, id):
     active_listings_in_category = Listing.objects.filter(category=category.id)
 
     if category is not None:
-
         if len(active_listings_in_category) == 0:
             return render(request, "auctions/category.html", {
                 "category": category,
@@ -147,16 +145,8 @@ def get_category(request, id):
 def get_listing(request, id):
     listing = Listing.objects.get(pk=id)
 
-    if request.method == "POST":
-        placed_bid = int(request.POST["bid"])
-        listing_starting_bid = int(listing.starting_bid)
-
-        is_bigger = False
-
-@login_required(login_url="/login")
-def place_bid(request, id):
     return render(request, "auctions/listing.html", {
-        "bid": 0
+        "listing": listing
     })
 
 
@@ -187,3 +177,38 @@ def add_to_watchlist(request, id):
         listing.watchlist.add(user)
 
     return redirect('get_listing', id=listing.id)
+
+
+@login_required(login_url="/login")
+def place_bid(request, id):
+    listing = Listing.objects.get(pk=id)
+    bid_count = listing.bids.count()
+
+    if request.method == "POST":
+        placed_bid = request.POST["bid"]
+        listing_starting_bid = listing.starting_bid
+
+        try:
+            placed_bid = float(placed_bid)
+        except ValueError:
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "bid_message": "Invalid input. Please enter a valid number for your bid.",
+            })
+
+        if placed_bid <= 0:
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "bid_message": "Your bid must be greater than zero.",
+            })
+
+        if placed_bid > listing_starting_bid and placed_bid is not None:
+            listing.starting_bid = placed_bid
+            listing.save()
+
+            return redirect("get_listing", id=listing.id)
+        else:
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "bid_message": f"Your bid (${'{:.2f}'.format(placed_bid)}) must be higher than the current price ${'{:.2f}'.format(listing_starting_bid)}'."
+            })
