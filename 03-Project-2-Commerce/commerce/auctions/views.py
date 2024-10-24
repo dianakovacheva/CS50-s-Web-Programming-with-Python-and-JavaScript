@@ -212,3 +212,6 @@ def place_bid(request, id):
                 "listing": listing,
                 "bid_message": f"Your bid (${'{:.2f}'.format(placed_bid)}) must be higher than the current price ${'{:.2f}'.format(listing_starting_bid)}'."
             })
+
+    return redirect('get_listing', id=listing.id)
+
