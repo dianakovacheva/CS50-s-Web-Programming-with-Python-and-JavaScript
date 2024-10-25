@@ -85,25 +85,22 @@ input, textarea {
     gap: 1em;
 }
 
-#listing-details-container .badge {
+.badge {
     background-color: #6c757d;
     color: white;
-    width: 70px;
 }
 
 #listing-details-container .listing-img {
     height: auto;
-    max-width: 400px;
+    max-width: 450px;
 }
 
-.bid-form-container form {
+.bid-form-container {
     display: flex;
     flex-direction: column;
 }
 
-.bid-form-container .btn {
-    width: 100px;
-}
+
 /*End listing details page*/
 
 /*Start page heading*/
@@ -148,5 +145,4 @@ input, textarea {
     display: flex;
     flex-direction: column;
 }
-
 /*End create listing form*/
