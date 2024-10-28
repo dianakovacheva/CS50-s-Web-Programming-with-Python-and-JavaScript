@@ -7,12 +7,10 @@
 {% block body %}
     <h2>Watchlist</h2>
 
-    {% if message %}
-        {{ message }}
-    {% endif %}
-    
-        {% for listing in watchlist %}
-            {% include "auctions/listing_card.html" %}
-        {% endfor %}
+    {% for listing in user.watchlist.all %}
+        {% include "auctions/listing_card.html" %}
+    {% empty %}
+        Watchlist is empty.
+    {% endfor %}
 
 {% endblock %}
