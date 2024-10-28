@@ -12,14 +12,13 @@ from .models import User, Listing, Bid, Comment, Category
 
 
 def index(request):
-    try:
-        listings = Listing.objects.all()
+    listings = Listing.objects.all()
 
-        if listings:
-            return render(request, "auctions/index.html", {
-                "listings": listings
-            })
-    except IntegrityError:
+    if len(listings) > 0:
+        return render(request, "auctions/index.html", {
+            "listings": listings,
+        })
+    else:
         return render(request, "auctions/index.html", {
             "message": "No listings to show."
         })
