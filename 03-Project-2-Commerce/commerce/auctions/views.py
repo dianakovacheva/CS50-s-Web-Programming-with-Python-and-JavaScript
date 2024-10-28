@@ -225,6 +225,23 @@ def place_bid(request, id):
     return redirect('get_listing', id=listing.id)
 
 
+@login_required(login_url="/login")
+def delete_bid(request, listing_id, bid_id):
+    user = request.user
+
+    if request.method == "POST":
+        listing = Listing.objects.get(pk=listing_id)
+        bid = Bid.objects.get(pk=bid_id, listing=listing.id)
+
+        if user.id == bid.owner.id:
+            bid.delete()
+            previous_price = listing.bids.last().bid
+            listing.price = previous_price
+            listing.save()
+
+            return redirect("get_listing", id=listing.id)
+
+
 def close_listing(request, id):
     listing = Listing.objects.get(pk=id)
     is_owner = request.user.id == listing.owner.id
