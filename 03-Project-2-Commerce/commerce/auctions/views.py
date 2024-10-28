@@ -223,3 +223,15 @@ def place_bid(request, id):
 
     return redirect('get_listing', id=listing.id)
 
+
+def close_listing(request, id):
+    listing = Listing.objects.get(pk=id)
+    is_owner = request.user.id == listing.owner.id
+
+    if request.method == "POST":
+        if is_owner and listing.is_active:
+            listing.is_active = False
+            listing.save()
+
+            return redirect("get_listing", id=listing.id)
+    return render(request, "auctions/listing.html")
