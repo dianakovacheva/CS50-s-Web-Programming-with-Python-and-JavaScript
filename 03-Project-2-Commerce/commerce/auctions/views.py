@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, is_valid_path
@@ -113,11 +114,11 @@ def create_listing(request):
 
 
 def get_categories(request):
-    categories = Category.objects.all()
+    categories = Category.objects.annotate(listings_count=Count("categories"))
 
     if categories is not None and len(categories) > 0:
         return render(request, "auctions/categories.html", {
-            "categories": categories
+            "categories": categories,
         })
     else:
         return render(request, "auctions/categories.html", {
