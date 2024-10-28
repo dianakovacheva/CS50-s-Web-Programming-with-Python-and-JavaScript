@@ -82,6 +82,7 @@ def register(request):
 @login_required(login_url="/login")
 def create_listing(request):
     categories = Category.objects.all()
+    user = request.user
 
     if request.method == "POST":
         title = request.POST["title"]
@@ -90,18 +91,18 @@ def create_listing(request):
         image_URL = request.POST["image_URL"]
         category_ids = request.POST.getlist("category")
 
-        try:
-            if not Listing.objects.filter(title=title).exists():
-                created_listing = Listing.objects.create(title=title, description=description, price=price,
-                                                         image_URL=image_URL, owner=request.user)
+        if not Listing.objects.filter(title=title).exists():
+            created_listing = Listing.objects.create(title=title, description=description,
+                                                     price=price,
+                                                     image_URL=image_URL, owner=user)
 
-                # Convert category_ids (strings) to a list of Category instances
-                category_objects = Category.objects.filter(id__in=category_ids)
-                created_listing.category.set(category_objects)
-                created_listing.save()
+            # Convert category_ids (strings) to a list of Category instances
+            category_objects = Category.objects.filter(id__in=category_ids)
+            created_listing.category.set(category_objects)
+            created_listing.save()
 
-                return redirect("get_listing", id=created_listing.id)
-        except IntegrityError:
+            return redirect("get_listing", id=created_listing.id)
+        else:
             return render(request, "auctions/create_listing.html", {
                 "message": "Listing already exists."
             })
