@@ -6,8 +6,10 @@
 
 {% block body %}
 
-    {% if message or user.is_authenticated == False %}
-        <div>{{ message }}</div>
+    {% if message %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
     {% endif %}
 
     <h2>Login</h2>
