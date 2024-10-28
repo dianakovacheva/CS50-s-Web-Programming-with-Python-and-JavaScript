@@ -18,7 +18,7 @@ class Listing(models.Model):
     # foreign key User
     owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="auction_owner")
     # many-to-many relation with AuctionCategory
-    category = models.ManyToManyField("Category", help_text="Select a category", related_name="auction_categories")
+    category = models.ManyToManyField("Category", help_text="Select a category", related_name="categories")
     date_created = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     # foreign key Comment
