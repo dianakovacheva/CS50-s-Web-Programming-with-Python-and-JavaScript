@@ -35,6 +35,7 @@ class Bid(models.Model):
     listing = models.ForeignKey("Listing", on_delete=models.CASCADE, related_name="bids")
     # foreign key User
     owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="bids")
+    is_valid = models.BooleanField(default=True)
     bid_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

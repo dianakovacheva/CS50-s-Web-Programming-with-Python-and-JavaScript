@@ -78,10 +78,25 @@
                                 <td>{{ bid.owner }}</td>
                                 <td>{{ bid.bid_time }}</td>
                             </tr>
-                            </tbody>
-                        {% endif %}
-                    {% endfor %}
-                </table>
+                            </thead>
+                            {% for bid in placed_bids %}
+                                {% if listing.id == bid.listing_id %}
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">${{ bid.bid }}</th>
+                                        <td>{{ bid.owner }}</td>
+                                        <td>{{ bid.bid_time }}</td>
+                                        <form action="{% url 'delete_bid' listing.id bid.id %}" method="post">
+                                            {% csrf_token %}
+                                            <td><input class="btn btn-primary" type="submit" value="Delete"></td>
+                                        </form>
+                                    </tr>
+                                    </tbody>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
             </div>
         {% endif %}
 
