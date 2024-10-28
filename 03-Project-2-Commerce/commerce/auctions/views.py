@@ -107,6 +107,7 @@ def create_listing(request):
             return render(request, "auctions/create_listing.html", {
                 "message": "Listing already exists."
             })
+
     # If GET request, render the form
     return render(request, "auctions/create_listing.html", {
         "categories": categories
