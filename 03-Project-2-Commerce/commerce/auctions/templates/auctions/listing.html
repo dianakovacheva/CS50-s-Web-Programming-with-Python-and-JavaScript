@@ -28,9 +28,11 @@
             </div>
         </div>
         <!--TODO: Add logic if in watchlist-->
-        {% if user in listing.watchlist.all %}
-            <span class="badge text-bg-secondary">Watchlist</span>
-        {% endif %}
+        <div class="watchlist_badge">
+            {% if user in listing.watchlist.all %}
+                <span class="badge">Watchlist</span>
+            {% endif %}
+        </div>
         {% if listing.image_URL %}
             <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
                  alt="{{ listing.title }}">
