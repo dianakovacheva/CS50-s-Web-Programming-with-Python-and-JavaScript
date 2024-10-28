@@ -144,10 +144,25 @@ def get_category(request, id):
 
 
 def get_listing(request, id):
+    user = request.user
     listing = Listing.objects.get(pk=id)
+    is_listing_owner = listing.owner.id == user.id
+    placed_bids = Bid.objects.filter(listing=listing)
+    current_bid = placed_bids.last()
+    username_current_bid = ""
+    is_current_bid_owner = False
+
+    if placed_bids:
+        username_current_bid = User.objects.filter(id=current_bid.owner_id)[0]
+        if request.user.id == current_bid.owner_id:
+            is_current_bid_owner = True
 
     return render(request, "auctions/listing.html", {
-        "listing": listing
+        "listing": listing,
+        "is_listing_owner": is_listing_owner,
+        "placed_bids": placed_bids,
+        "is_current_bid_owner": is_current_bid_owner,
+        "username_current_bid": username_current_bid
     })
 
 
