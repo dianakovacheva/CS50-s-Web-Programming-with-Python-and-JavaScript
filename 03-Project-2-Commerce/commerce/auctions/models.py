@@ -26,7 +26,7 @@ class Listing(models.Model):
     watchlist = models.ManyToManyField("User", blank=True, related_name="watchlist")
 
     def __str__(self):
-        return f"{self.title} {self.description} {self.starting_bid} {self.current_bid} {self.image_URL} {self.owner} {self.category} {self.date_created} {self.is_active} {self.comments} {self.watchlist}"
+        return f"{self.title}"
 
 
 class Bid(models.Model):
