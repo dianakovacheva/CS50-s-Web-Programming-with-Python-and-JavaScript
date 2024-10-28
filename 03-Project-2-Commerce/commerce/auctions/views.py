@@ -188,11 +188,10 @@ def add_to_watchlist(request, id):
 @login_required(login_url="/login")
 def place_bid(request, id):
     listing = Listing.objects.get(pk=id)
-    bid_count = listing.bids.count()
 
-    if request.method == "POST":
-        placed_bid = request.POST["bid"]
-        listing_starting_bid = listing.starting_bid
+    if request.method == "POST" and listing.is_active:
+        placed_bid = float(request.POST["bid"])
+        price = listing.price
 
         try:
             placed_bid = float(placed_bid)
@@ -208,15 +207,18 @@ def place_bid(request, id):
                 "bid_message": "Your bid must be greater than zero.",
             })
 
-        if placed_bid > listing_starting_bid and placed_bid is not None:
-            listing.starting_bid = placed_bid
+        if placed_bid > price and placed_bid is not None:
+            listing.price = placed_bid
             listing.save()
+
+            bid = Bid(bid=placed_bid, listing=listing, owner=request.user)
+            bid.save()
 
             return redirect("get_listing", id=listing.id)
         else:
             return render(request, "auctions/listing.html", {
                 "listing": listing,
-                "bid_message": f"Your bid (${'{:.2f}'.format(placed_bid)}) must be higher than the current price ${'{:.2f}'.format(listing_starting_bid)}'."
+                "bid_message": f"Your bid (${'{:.2f}'.format(placed_bid)}) must be higher than the current price ${'{:.2f}'.format(price)}."
             })
 
     return redirect('get_listing', id=listing.id)
