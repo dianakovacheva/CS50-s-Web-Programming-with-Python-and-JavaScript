@@ -13,8 +13,7 @@ class User(AbstractUser):
 class Listing(models.Model):
     title = models.CharField(max_length=64, unique=True, help_text="Enter title")
     description = models.TextField(max_length=1000, help_text="Enter a brief description of the auction")
-    starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
-    current_bid = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     image_URL = models.URLField(max_length=200, help_text="Add image URL")
     # foreign key User
     owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="auction_owner")
