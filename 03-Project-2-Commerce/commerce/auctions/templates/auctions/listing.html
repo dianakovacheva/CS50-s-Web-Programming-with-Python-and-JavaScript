@@ -46,16 +46,75 @@
         <p>
             <small>
                 <!-- TODO: Add logic for bids quantity -->
-                2 bid(s) so far.
-                <!-- TODO: Add logic to check if the current user has bid for this listing -->
-                {% if user.is_authenticated %}
-                    <small>Your bid is the current bid.</small>
+                {% if placed_bids.count == 1 %}
+                    {{ placed_bids.count }} bid so far.
+                {% else %}
+                    {{ placed_bids.count }} bid(s) so far.
                 {% endif %}
+
+                <!-- TODO: Add logic to check if the current user has bid for this listing -->
+                {% if is_current_bid_owner %}
+                    Your bid is the current bid.
+                {% endif %}
+
             </small>
         </p>
-        {% if user.is_authenticated %}
-            <div class="bid-form-container">
-                <form action="{% url 'get_listing' listing.id %}" method="post">
+
+        {% if placed_bids %}
+            <div class="placed-bids">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Placed by</th>
+                        <th scope="col">Placed on</th>
+                    </tr>
+                    </thead>
+                    {% for bid in placed_bids %}
+                        {% if listing.id == bid.listing_id %}
+                            <tbody>
+                            <tr>
+                                <th scope="row">${{ bid.bid }}</th>
+                                <td>{{ bid.owner }}</td>
+                                <td>{{ bid.bid_time }}</td>
+                            </tr>
+                            </tbody>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+
+        <div class="bid-form-container">
+
+            {% if bid_message %}
+                <div class="alert alert-danger" role="alert">
+                    {{ bid_message }}
+                </div>
+            {% endif %}
+
+
+            {% if is_listing_owner %}
+                <form action="{% url 'close_listing' listing.id %}" method="post">
+                    {% csrf_token %}
+                    {% if listing.is_active == True %}
+                        <input class="btn btn-primary" type="submit" value="Close Listing">
+                    {% else %}
+                        {% if placed_bids %}
+                            <div class="alert alert-success" role="alert">
+                                Listing closed successfully! Sold for ${{ listing.price }}. The winner is
+                                <strong>{{ username_current_bid }}</strong>.
+                            </div>
+                        {% else %}
+                            <div class="alert alert-success" role="alert">
+                                Listing closed successfully!
+                            </div>
+                        {% endif %}
+                        <input class="btn btn-primary" type="submit" value="Close Listing" disabled>
+                    {% endif %}
+                </form>
+            {% else %}
+                <form action="{% url 'place_bid' listing.id %}" method="post">
                     {% csrf_token %}
                     <input type="text" name="bid" placeholder="Bid" class="form-control">
                     <input class="btn btn-primary" type="submit" value="Place Bid">
