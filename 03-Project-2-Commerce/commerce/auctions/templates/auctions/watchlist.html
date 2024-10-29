@@ -7,7 +7,7 @@
 {% block body %}
     <h2>Watchlist</h2>
 
-    {% for listing in user.watchlist.all %}
+    {% for listing in listings %}
         {% include "auctions/listing_card.html" %}
     {% empty %}
         Watchlist is empty.
