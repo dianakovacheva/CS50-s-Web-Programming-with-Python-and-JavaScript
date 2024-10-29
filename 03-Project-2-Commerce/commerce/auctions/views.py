@@ -13,11 +13,12 @@ from .models import User, Listing, Bid, Comment, Category
 
 
 def index(request):
-    listings = Listing.objects.all()
+    # Get only active listings
+    active_listings = Listing.objects.filter(is_active=True)
 
-    if len(listings) > 0:
+    if len(active_listings) > 0:
         return render(request, "auctions/index.html", {
-            "listings": listings,
+            "active_listings": active_listings,
         })
     else:
         return render(request, "auctions/index.html", {
