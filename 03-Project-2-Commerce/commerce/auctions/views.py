@@ -179,7 +179,6 @@ def get_listing(request, id):
 
 @login_required(login_url="/login")
 def get_watchlist(request):
-    return render(request, "auctions/watchlist.html")
     user = request.user
     listings = Listing.objects.filter(watchlist=user.id).order_by("-is_active")
 
@@ -199,7 +198,7 @@ def add_to_watchlist(request, id):
     else:
         listing.watchlist.add(user)
 
-    return redirect('get_listing', id=listing.id)
+    return redirect("get_listing", id=listing.id)
 
 
 @login_required(login_url="/login")
