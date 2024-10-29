@@ -264,6 +264,7 @@ def delete_bid(request, listing_id, bid_id):
             return redirect("get_listing", id=listing.id)
 
 
+@login_required(login_url="/login")
 def close_listing(request, id):
     listing = Listing.objects.get(pk=id)
     is_owner = request.user.id == listing.owner.id
