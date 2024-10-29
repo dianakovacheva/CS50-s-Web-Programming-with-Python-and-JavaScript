@@ -13,144 +13,73 @@
         </div>
     {% endif %}
 
-    <div id="listing-details-container">
-        <div class="listing-header">
-            <h2>Listing: {{ listing.title }}</h2>
-            <div class="action-btns">
-                <form action="{% url 'add_to_watchlist' listing.id %}" method="post">
-                    {% csrf_token %}
-                    {% if user in listing.watchlist.all %}
-                        <input type="submit" value="Remove from Watchlist" class="btn btn-primary">
-                    {% else %}
-                        <input type="submit" value="Add to Watchlist" class="btn btn-primary">
-                    {% endif %}
-                </form>
+    {% if listing %}
+        <div id="listing-details-container">
+            <div class="listing-header">
+                <h2>Listing: {{ listing.title }}</h2>
+
+                {% include "auctions/add_to_watchlist_action_btns.html" %}
+
             </div>
-        </div>
-        <!--TODO: Add logic if in watchlist-->
-        <div class="watchlist_badge">
-            {% if user in listing.watchlist.all %}
-                <span class="badge">Watchlist</span>
+
+            {% include "auctions/watchlist_badge.html" %}
+
+            {% if listing.image_URL %}
+                <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
+                     alt="{{ listing.title }}">
+            {% else %}
+                <img src="../../static/auctions/landscape-placeholder.svg" class="listing-img img-fluid rounded-start"
+                     alt="{{ listing.title }}">
             {% endif %}
-        </div>
-        {% if listing.image_URL %}
-            <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
-                 alt="{{ listing.title }}">
-        {% else %}
-            <img src="../../static/auctions/landscape-placeholder.svg" class="listing-img img-fluid rounded-start"
-                 alt="{{ listing.title }}">
-        {% endif %}
-        <p>{{ listing.description }}</p>
-        <h3 class="listing-price">${{ listing.price }}</h3>
+            <p>{{ listing.description }}</p>
 
-        <p>
-            <small>
-                <!-- TODO: Add logic for bids quantity -->
-                {% if placed_bids.count == 1 %}
-                    {{ placed_bids.count }} bid so far.
-                {% else %}
-                    {{ placed_bids.count }} bid(s) so far.
-                {% endif %}
+            <!-- Price to display -->
+            {% if placed_bids %}
+                <h3 class="listing-price">
+                    <small class="starting-price">${{ listing.starting_price }}</small>
+                    ${{ listing.current_bid }}</h3>
+            {% else %}
+                <h3 class="listing-price">${{ listing.starting_price }}</h3>
+            {% endif %}
 
-                <!-- TODO: Add logic to check if the current user has bid for this listing -->
-                {% if is_current_bid_owner %}
-                    Your bid is the current bid.
-                {% endif %}
+            <div class="bids-info">
+                <p>
+                    <small>
+                        {% if placed_bids.count == 1 %}
+                            {{ placed_bids.count }} bid so far.
+                        {% else %}
+                            {{ placed_bids.count }} bid(s) so far.
+                        {% endif %}
 
-            </small>
-        </p>
+                        <!-- Check if logged in use is the owner of the current bid -->
+                        {% if is_current_bid_owner %}
+                            Your bid is the current bid.
+                        {% endif %}
 
-        {% if placed_bids %}
-            <div class="placed-bids">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Placed by</th>
-                        <th scope="col">Placed on</th>
-                    </tr>
-                    </thead>
-                    {% for bid in placed_bids %}
-                        {% if listing.id == bid.listing_id %}
-                            <tbody>
-                            <tr>
-                                <th scope="row">${{ bid.bid }}</th>
-                                <td>{{ bid.owner }}</td>
-                                <td>{{ bid.bid_time }}</td>
-                            </tr>
-                            </thead>
-                            {% for bid in placed_bids %}
-                                {% if listing.id == bid.listing_id %}
-                                    <tbody>
-                                    <tr>
-                                        <th scope="row">${{ bid.bid }}</th>
-                                        <td>{{ bid.owner }}</td>
-                                        <td>{{ bid.bid_time }}</td>
-                                        <form action="{% url 'delete_bid' listing.id bid.id %}" method="post">
-                                            {% csrf_token %}
-                                            <td><input class="btn btn-primary" type="submit" value="Delete"></td>
-                                        </form>
-                                    </tr>
-                                    </tbody>
-                                {% endif %}
-                            {% endfor %}
-                        </table>
-                    </div>
-                {% endif %}
+                    </small>
+                </p>
+
+                {% include "auctions/table_placed_bids.html" %}
+
             </div>
-        {% endif %}
 
-        <div class="bid-form-container">
-
-            {% if bid_message %}
+            <!-- Display bid_message if available -->
+            {% if bid_message_error %}
                 <div class="alert alert-danger" role="alert">
-                    {{ bid_message }}
+                    {{ bid_message_error }}
                 </div>
             {% endif %}
 
-
-            {% if is_listing_owner %}
-                <form action="{% url 'close_listing' listing.id %}" method="post">
-                    {% csrf_token %}
-                    {% if listing.is_active == True %}
-                        <input class="btn btn-primary" type="submit" value="Close Listing">
-                    {% else %}
-                        {% if placed_bids %}
-                            <div class="alert alert-success" role="alert">
-                                Listing closed successfully! Sold for ${{ listing.price }}. The winner is
-                                <strong>{{ username_current_bid }}</strong>.
-                            </div>
-                        {% else %}
-                            <div class="alert alert-success" role="alert">
-                                Listing closed successfully!
-                            </div>
-                        {% endif %}
-                        <input class="btn btn-primary" type="submit" value="Close Listing" disabled>
-                    {% endif %}
-                </form>
-            {% else %}
-                <form action="{% url 'place_bid' listing.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="text" name="bid" placeholder="Bid" class="form-control">
-                    <input class="btn btn-primary" type="submit" value="Place Bid">
-                </form>
+            {% if bid_message_success %}
+                <div class="alert alert-success" role="alert">
+                    {{ bid_message_success }}
+                </div>
             {% endif %}
 
+            {% include "auctions/place_bid_form.html" %}
 
+            {% include "auctions/listing_details_section.html" %}
         </div>
-
-        <div class="listing-info">
-            <h4>Details</h4>
-            <ul>
-                <!-- TODO: Add link to user's profile -->
-                <li>Listed by: <a href="{% url 'index' %}">{{ listing.owner }}</a></li>
-                <li>Category:
-                    {% for category in listing.category.all %}
-                        <a href="/categories/{{ category.id }}">{{ category }}</a>
-                    {% endfor %}
-                </li>
-            </ul>
-        </div>
-    </div>
+    {% endif %}
 
 {% endblock %}
