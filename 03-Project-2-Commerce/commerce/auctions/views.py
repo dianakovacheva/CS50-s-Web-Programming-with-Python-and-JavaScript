@@ -165,7 +165,10 @@ def get_listing(request, id):
     # Retrieve and clear the message from the session
     bid_message_error = request.session.pop("bid_message_error", None)
     bid_message_success = request.session.pop("bid_message_success", None)
+
     comment_message_error = request.session.pop("comment_message_error", None)
+    comment_message_success = request.session.pop("comment_message_success", None)
+    comments_list_message_success = request.session.pop("comments_list_message_success", None)
 
     return render(request, "auctions/listing.html", {
         "listing": listing,
@@ -177,6 +180,8 @@ def get_listing(request, id):
         "bid_message_error": bid_message_error,
         "bid_message_success": bid_message_success,
         "comment_message_error": comment_message_error,
+        "comment_message_success": comment_message_success,
+        "comments_list_message_success": comments_list_message_success,
         "comments": comments
     })
 
@@ -289,7 +294,6 @@ def add_comment(request, id):
 
     if request.method == "POST":
         comment_content = request.POST["content"]
-        listing_ids = request.POST.getlist("listing")
 
         if len(comment_content) <= 0:
             # Store the error message in the session temporarily
@@ -307,6 +311,22 @@ def add_comment(request, id):
             listing.comments.add(added_comment)
             listing.save()
 
-            # Store the error message in the session temporarily
+            # Store the success message in the session temporarily
             request.session["comment_message_success"] = "Comment placed successfully."
+            return redirect("get_listing", id=listing.id)
+
+
+@login_required(login_url="/login")
+def delete_comment(request, listing_id, comment_id):
+    user = request.user
+    listing = Listing.objects.get(pk=listing_id)
+    comment = Comment.objects.get(pk=comment_id, listing=listing_id)
+    is_comment_owner = user.id == comment.author.id
+
+    if request.method == "POST":
+        if is_comment_owner is True:
+            comment.delete()
+
+            # Store the success message in the session temporarily
+            request.session["comments_list_message_success"] = "Comment deleted successfully."
             return redirect("get_listing", id=listing.id)

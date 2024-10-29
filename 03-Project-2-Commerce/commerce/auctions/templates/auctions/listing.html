@@ -89,24 +89,40 @@
             {% include "auctions/listing_details_section.html" %}
             <hr>
             <!-- Add comment form -->
-            {% if comment_message_error %}
-                <div class="alert alert-danger" role="alert">
-                    {{ comment_message_error }}
-                </div>
-            {% endif %}
 
-            {% if comment_message_success %}
-                <div class="alert alert-success" role="alert">
-                    {{ comment_message_success }}
-                </div>
-            {% endif %}
+            {% if listing.is_active %}
 
-            {% include "auctions/add_comment_form.html" %}
+                {% if comment_message_error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ comment_message_error }}
+                    </div>
+                {% endif %}
+
+                {% if comment_message_success %}
+                    <div class="alert alert-success" role="alert">
+                        {{ comment_message_success }}
+                    </div>
+                {% endif %}
+
+                {% include "auctions/add_comment_form.html" %}
+            {% endif %}
 
             <!-- Comment card -->
-        {% for comment in comments %}
-            {% include "auctions/comment_card.html" %}
-        {% endfor %}
+            <h4>Comments</h4>
+            {% if comments %}
+
+                {% if comments_list_message_success %}
+                    <div class="alert alert-success" role="alert">
+                        {{ comments_list_message_success }}
+                    </div>
+                {% endif %}
+
+                {% for comment in comments %}
+                    {% include "auctions/comment_card.html" %}
+                {% endfor %}
+            {% else %}
+                No comments to show.
+            {% endif %}
         </div>
     {% endif %}
 {% endblock %}
