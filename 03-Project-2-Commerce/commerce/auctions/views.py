@@ -180,6 +180,12 @@ def get_listing(request, id):
 @login_required(login_url="/login")
 def get_watchlist(request):
     return render(request, "auctions/watchlist.html")
+    user = request.user
+    listings = Listing.objects.filter(watchlist=user.id).order_by("-is_active")
+
+    return render(request, "auctions/watchlist.html", {
+        "listings": listings
+    })
 
 
 @login_required(login_url="/login")
