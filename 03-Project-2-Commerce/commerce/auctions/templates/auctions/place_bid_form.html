@@ -1,0 +1,28 @@
+ <div class="bid-form-container">
+                {% if is_listing_owner %}
+                    <form action="{% url 'close_listing' listing.id %}" method="post">
+                        {% csrf_token %}
+                        {% if listing.is_active == True %}
+                            <input class="btn btn-primary" type="submit" value="Close Listing">
+                        {% else %}
+                            {% if placed_bids %}
+                                <div class="alert alert-success" role="alert">
+                                    Listing closed successfully! Sold for ${{ listing.current_bid }}. The winner is
+                                    <strong>{{ username_current_bid }}</strong>.
+                                </div>
+                            {% else %}
+                                <div class="alert alert-success" role="alert">
+                                    Listing closed successfully!
+                                </div>
+                            {% endif %}
+                            <input class="btn btn-primary" type="submit" value="Close Listing" disabled>
+                        {% endif %}
+                    </form>
+                {% else %}
+                    <form action="{% url 'place_bid' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="bid" placeholder="Bid" class="form-control">
+                        <input class="btn btn-primary" type="submit" value="Place Bid">
+                    </form>
+                {% endif %}
+            </div>
