@@ -164,6 +164,7 @@ def get_listing(request, id):
     # Retrieve and clear the message from the session
     bid_message_error = request.session.pop("bid_message_error", None)
     bid_message_success = request.session.pop("bid_message_success", None)
+    comment_message_error = request.session.pop("comment_message_error", None)
 
     return render(request, "auctions/listing.html", {
         "listing": listing,
@@ -173,7 +174,8 @@ def get_listing(request, id):
         "is_current_bid_owner": is_current_bid_owner,
         "username_current_bid": username_current_bid,
         "bid_message_error": bid_message_error,
-        "bid_message_success": bid_message_success
+        "bid_message_success": bid_message_success,
+        "comment_message_error": comment_message_error
     })
 
 
@@ -276,3 +278,32 @@ def close_listing(request, id):
 
             return redirect("get_listing", id=listing.id)
     return render(request, "auctions/listing.html")
+
+
+def add_comment(request, id):
+    listing = Listing.objects.get(pk=id)
+    user = request.user
+
+    if request.method == "POST":
+        comment_content = request.POST["content"]
+        listing_ids = request.POST.getlist("listing")
+
+        if len(comment_content) <= 0:
+            # Store the error message in the session temporarily
+            request.session["comment_message_error"] = "Comment must be longer than zero."
+            return redirect("get_listing", id=listing.id)
+
+        if len(comment_content) > 1000:
+            # Store the error message in the session temporarily
+            request.session["comment_message_error"] = "Comment must be not longer than 1000 characters."
+            return redirect("get_listing", id=listing.id)
+
+        if 0 < len(comment_content) <= 1000 and comment_content is not None:
+            added_comment = Comment.objects.create(author=user, listing=listing, content=comment_content)
+            added_comment.save()
+            listing.comments.add(added_comment)
+            listing.save()
+
+            # Store the error message in the session temporarily
+            request.session["comment_message_success"] = "Comment placed successfully."
+            return redirect("get_listing", id=listing.id)

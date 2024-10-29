@@ -4,7 +4,6 @@
     {{ listing.title }}
 {% endblock %}
 
-
 {% block body %}
 
     {% if message %}
@@ -15,15 +14,19 @@
 
     {% if listing %}
         <div id="listing-details-container">
+            <!-- Listing title -->
             <div class="listing-header">
                 <h2>Listing: {{ listing.title }}</h2>
 
+                <!-- Add to watchlist action btns -->
                 {% include "auctions/add_to_watchlist_action_btns.html" %}
 
             </div>
 
+            <!-- Watchlist badge -->
             {% include "auctions/watchlist_badge.html" %}
 
+            <!-- Listing information -->
             {% if listing.image_URL %}
                 <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
                      alt="{{ listing.title }}">
@@ -42,6 +45,7 @@
                 <h3 class="listing-price">${{ listing.starting_price }}</h3>
             {% endif %}
 
+            <!-- Bid(s) count information -->
             <div class="bids-info">
                 <p>
                     <small>
@@ -59,27 +63,45 @@
                     </small>
                 </p>
 
+                <!-- Table placed bids -->
                 {% include "auctions/table_placed_bids.html" %}
 
             </div>
 
-            <!-- Display bid_message if available -->
+            <!-- Display bid_message_error if available -->
             {% if bid_message_error %}
                 <div class="alert alert-danger" role="alert">
                     {{ bid_message_error }}
                 </div>
             {% endif %}
 
+            <!-- Display bid_message_success if available -->
             {% if bid_message_success %}
                 <div class="alert alert-success" role="alert">
                     {{ bid_message_success }}
                 </div>
             {% endif %}
 
+            <!-- Place bid form -->
             {% include "auctions/place_bid_form.html" %}
 
+            <!-- Listing details section -->
             {% include "auctions/listing_details_section.html" %}
+            <hr>
+            <!-- Add comment form -->
+            {% if comment_message_error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ comment_message_error }}
+                </div>
+            {% endif %}
+
+            {% if comment_message_success %}
+                <div class="alert alert-success" role="alert">
+                    {{ comment_message_success }}
+                </div>
+            {% endif %}
+
+            {% include "auctions/add_comment_form.html" %}
         </div>
     {% endif %}
-
 {% endblock %}

@@ -1,0 +1,13 @@
+<div class="comments_container">
+    <h4>Comments</h4>
+    <form action="{% url 'add_comment' listing.id %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="content" class="form-label"></label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="content"></textarea>
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="Add Comment" class="btn btn-primary">
+        </div>
+    </form>
+</div>
