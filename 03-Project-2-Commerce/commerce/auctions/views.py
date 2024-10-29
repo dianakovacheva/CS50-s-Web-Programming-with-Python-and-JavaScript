@@ -130,7 +130,7 @@ def get_categories(request):
 
 def get_category(request, id):
     category = Category.objects.get(pk=id)
-    active_listings_in_category = Listing.objects.filter(category=category.id)
+    active_listings_in_category = Listing.objects.filter(category=category.id, is_active=True)
 
     if category is not None:
         if len(active_listings_in_category) == 0:
