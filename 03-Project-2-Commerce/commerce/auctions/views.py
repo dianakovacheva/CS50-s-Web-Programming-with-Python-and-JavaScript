@@ -155,6 +155,7 @@ def get_listing(request, id):
     current_bid = placed_bids.last()
     username_current_bid = ""
     is_current_bid_owner = False
+    comments = Comment.objects.filter(listing=listing)
 
     if placed_bids:
         username_current_bid = User.objects.filter(id=current_bid.owner_id)[0]
@@ -175,7 +176,8 @@ def get_listing(request, id):
         "username_current_bid": username_current_bid,
         "bid_message_error": bid_message_error,
         "bid_message_success": bid_message_success,
-        "comment_message_error": comment_message_error
+        "comment_message_error": comment_message_error,
+        "comments": comments
     })
 
 
@@ -280,6 +282,7 @@ def close_listing(request, id):
     return render(request, "auctions/listing.html")
 
 
+@login_required(login_url="/login")
 def add_comment(request, id):
     listing = Listing.objects.get(pk=id)
     user = request.user

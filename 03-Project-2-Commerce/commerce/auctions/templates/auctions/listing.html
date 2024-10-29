@@ -102,6 +102,11 @@
             {% endif %}
 
             {% include "auctions/add_comment_form.html" %}
+
+            <!-- Comment card -->
+        {% for comment in comments %}
+            {% include "auctions/comment_card.html" %}
+        {% endfor %}
         </div>
     {% endif %}
 {% endblock %}
