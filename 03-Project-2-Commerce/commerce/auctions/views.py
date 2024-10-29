@@ -90,13 +90,14 @@ def create_listing(request):
     if request.method == "POST":
         title = request.POST["title"]
         description = request.POST["description"]
-        starting_price = request.POST["starting_price"]
+        starting_price = float(request.POST["starting_price"])
         image_URL = request.POST["image_URL"]
         category_ids = request.POST.getlist("category")
 
         if not Listing.objects.filter(title=title).exists():
             created_listing = Listing.objects.create(title=title, description=description,
                                                      starting_price=starting_price,
+                                                     current_bid=starting_price,
                                                      image_URL=image_URL, owner=user)
 
             # Convert category_ids (strings) to a list of Category instances
