@@ -206,38 +206,38 @@ def place_bid(request, id):
     listing = Listing.objects.get(pk=id)
 
     if request.method == "POST" and listing.is_active:
-        placed_bid = float(request.POST["bid"])
-        price = listing.price
+        placed_bid = request.POST["bid"]
+        current_bid = listing.current_bid
 
-        try:
-            placed_bid = float(placed_bid)
-        except ValueError:
-            return render(request, "auctions/listing.html", {
-                "listing": listing,
-                "bid_message": "Invalid input. Please enter a valid number for your bid.",
-            })
+        if not placed_bid.isnumeric():
+            # Store the error message in the session temporarily
+            request.session["bid_message_error"] = "Invalid input. Please enter a valid number for your bid."
+            return redirect("get_listing", id=listing.id)
+
+        placed_bid = float(placed_bid)
 
         if placed_bid <= 0:
-            return render(request, "auctions/listing.html", {
-                "listing": listing,
-                "bid_message": "Your bid must be greater than zero.",
-            })
+            # Store the error message in the session temporarily
+            request.session["bid_message_error"] = "Your bid must be greater than zero."
+            return redirect("get_listing", id=listing.id)
 
-        if placed_bid > price and placed_bid is not None:
-            listing.price = placed_bid
+        if placed_bid > current_bid and placed_bid is not None:
+            listing.current_bid = placed_bid
             listing.save()
 
             bid = Bid(bid=placed_bid, listing=listing, owner=request.user)
             bid.save()
 
+            # Store the success message in the session temporarily
+            request.session["bid_message_success"] = "Bid placed successfully."
             return redirect("get_listing", id=listing.id)
         else:
-            return render(request, "auctions/listing.html", {
-                "listing": listing,
-                "bid_message": f"Your bid (${'{:.2f}'.format(placed_bid)}) must be higher than the current price ${'{:.2f}'.format(price)}."
-            })
+            # Store the error message in the session temporarily
+            request.session["bid_message_error"] = (f"Your bid (${'{:.2f}'.format(placed_bid)}) must be higher than "
+                                                    f"the current price ${'{:.2f}'.format(current_bid)}.")
+            return redirect("get_listing", id=listing.id)
 
-    return redirect('get_listing', id=listing.id)
+    return redirect("get_listing", id=listing.id)
 
 
 @login_required(login_url="/login")
