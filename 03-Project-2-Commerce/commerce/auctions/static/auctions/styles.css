@@ -22,9 +22,7 @@ input, textarea {
 #active-listings-container {
     margin-top: 2rem;
 }
-
 /*End active listings list container*/
-
 
 /*Start active listings list*/
 .active-listing {
@@ -146,3 +144,9 @@ input, textarea {
     flex-direction: column;
 }
 /*End create listing form*/
+
+/*Start Place bid form*/
+.starting-price {
+    text-decoration: line-through !important;
+}
+
