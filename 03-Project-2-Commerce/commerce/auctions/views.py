@@ -247,13 +247,20 @@ def delete_bid(request, listing_id, bid_id):
     if request.method == "POST":
         listing = Listing.objects.get(pk=listing_id)
         bid = Bid.objects.get(pk=bid_id, listing=listing.id)
+        is_bid_owner = user.id == bid.owner.id
 
-        if user.id == bid.owner.id:
+        if is_bid_owner:
             bid.delete()
-            previous_price = listing.bids.last().bid
-            listing.price = previous_price
-            listing.save()
+            if listing.bids.count() > 0:
+                previous_price = listing.bids.last().bid
+                listing.current_bid = previous_price
+                listing.save()
+            else:
+                listing.current_bid = listing.starting_price
+                listing.save()
 
+            # Store the success message in the session temporarily
+            request.session["bid_message_success"] = "Bid retracted successfully."
             return redirect("get_listing", id=listing.id)
 
 
