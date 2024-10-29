@@ -1,5 +1,6 @@
 from urllib.parse import urlparse
 
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -150,21 +151,29 @@ def get_listing(request, id):
     listing = Listing.objects.get(pk=id)
     is_listing_owner = listing.owner.id == user.id
     placed_bids = Bid.objects.filter(listing=listing)
+    is_valid_bid = placed_bids.filter(is_valid=True)
     current_bid = placed_bids.last()
     username_current_bid = ""
     is_current_bid_owner = False
 
     if placed_bids:
         username_current_bid = User.objects.filter(id=current_bid.owner_id)[0]
-        if request.user.id == current_bid.owner_id:
+        if user.id == current_bid.owner_id:
             is_current_bid_owner = True
+
+    # Retrieve and clear the message from the session
+    bid_message_error = request.session.pop("bid_message_error", None)
+    bid_message_success = request.session.pop("bid_message_success", None)
 
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "is_listing_owner": is_listing_owner,
         "placed_bids": placed_bids,
+        "is_valid_bid": is_valid_bid,
         "is_current_bid_owner": is_current_bid_owner,
-        "username_current_bid": username_current_bid
+        "username_current_bid": username_current_bid,
+        "bid_message_error": bid_message_error,
+        "bid_message_success": bid_message_success
     })
 
 
