@@ -7,7 +7,7 @@
         {{ message }}
     {% endif %}
 
-    {% for listing in listings %}
+    {% for listing in active_listings %}
         {% include "auctions/listing_card.html" %}
     {% endfor %}
 {% endblock %}
