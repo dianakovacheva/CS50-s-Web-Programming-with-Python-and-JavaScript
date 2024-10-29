@@ -3,33 +3,45 @@
     <ul>
         <div id="active-listings-container">
             <a class="active-listing" href="{% url 'get_listing' listing.id %}">
-                <li>
-                    <div class="card mb-3">
-                        <div class="row g-0">
-                            <div class="col-md-2">
-                                {% if listing.image_URL %}
-                                    <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
-                                         alt="{{ listing.title }}">
-                                {% else %}
-                                    <img src="/static/auctions/landscape-placeholder.svg"
-                                         class="listing-img img-fluid rounded-start"
-                                         alt="{{ listing.title }}">
-                                {% endif %}
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ listing.title }}</h5>
-                                    <p class="card-text"><span class="listing-price">Price:</span>
-                                        ${{ listing.price }}</p>
-                                    <p class="card-text listing-description">{{ listing.description }}</p>
-                                    <p class="card-text"><small
-                                            class="listing-timestamp text-body-secondary">Created {{ listing.date_created }}</small>
-                                    </p>
+                {% if listing %}
+                    <li>
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-2">
+                                    {% if listing.image_URL %}
+                                        <img src="{{ listing.image_URL }}" class="listing-img img-fluid rounded-start"
+                                             alt="{{ listing.title }}">
+                                    {% else %}
+                                        <img src="/static/auctions/landscape-placeholder.svg"
+                                             class="listing-img img-fluid rounded-start"
+                                             alt="{{ listing.title }}">
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ listing.title }}</h5>
+                                        {% if listing.current_bid == 0 %}
+                                            <p class="card-text"><span class="listing-price">Price:</span>
+                                                ${{ listing.starting_price }}</p>
+                                        {% else %}
+                                            <p class="card-text"><span class="listing-price">Price:</span>
+                                                ${{ listing.current_bid }}</p>
+                                        {% endif %}
+                                        <p class="card-text listing-description">{{ listing.description }}</p>
+                                        <p class="card-text"><small
+                                                class="listing-timestamp text-body-secondary">Created {{ listing.date_created }}</small>
+                                        </p>
+                                        {% if listing.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                {% endif %}
             </a>
         </div>
     </ul>
