@@ -150,3 +150,7 @@ input, textarea {
     text-decoration: line-through !important;
 }
 
+.delete-bid-btn{
+    margin-bottom: 0;
+}
+/*End Place bid form*/
