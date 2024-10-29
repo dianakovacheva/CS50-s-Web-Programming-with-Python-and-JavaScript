@@ -13,8 +13,9 @@ class User(AbstractUser):
 class Listing(models.Model):
     title = models.CharField(max_length=64, unique=True, help_text="Enter title")
     description = models.TextField(max_length=1000, help_text="Enter a brief description of the auction")
-    price = models.DecimalField(max_digits=10, decimal_places=2)
     image_URL = models.URLField(max_length=200, help_text="Add image URL")
+    starting_price = models.DecimalField(max_digits=10, decimal_places=2)
+    current_bid = models.DecimalField(max_digits=10, decimal_places=2, default=starting_price)
     # foreign key User
     owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="auction_owner")
     # many-to-many relation with AuctionCategory
