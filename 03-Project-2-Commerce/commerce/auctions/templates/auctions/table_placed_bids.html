@@ -1,0 +1,36 @@
+ {% if placed_bids %}
+                    <div class="placed-bids">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Placed By</th>
+                                <th scope="col">Placed On</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            {% for bid in placed_bids %}
+                                {% if listing.id == bid.listing_id %}
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">${{ bid.bid }}</th>
+                                        <td>{{ bid.owner }}</td>
+                                        <td>{{ bid.bid_time }}</td>
+                                        <td>
+                                            <form action="{% url 'delete_bid' listing.id bid.id %}" method="post">
+                                                {% csrf_token %}
+
+                                                {% if user.id == bid.owner.id %}
+                                                    <input class="btn btn-primary delete-bid-btn" type="submit"
+                                                           value="Retract">
+                                                {% endif %}
+                                            </form>
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
